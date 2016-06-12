@@ -1,0 +1,21 @@
+{
+  "name": "wechat_wall",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "express": "^4.13.4",
+    "fs": "^0.0.2",
+    "querystring": "^0.2.0",
+    "request": "^2.72.0",
+    "socket.io": "^1.4.6",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "zcw",
+  "license": "ISC"
+}

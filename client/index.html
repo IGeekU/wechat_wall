@@ -1,0 +1,132 @@
+<!doctype html>
+<html ng-app="app">
+
+<head>
+	<meta charset="UTF-8"/>
+	<title>Wechat Wall</title>
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+   <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+   <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+	<script type="text/javascript" src="http://cdn.bootcss.com/angular.js/1.5.5/angular.min.js"></script>
+<link rel="stylesheet" href="http://124.207.24.154/ace/assets/css/ace.css" />
+<style type="text/css">
+.show{
+width:50%;
+background:white;
+}
+.send{
+background:#FFE7CE;
+}
+{
+margin-left:50px;
+opacity:0.5;  
+}
+.textarea{
+clear:both;
+position:absolute;
+min-height:60%; 
+max-height:70%;
+overflow:scroll;
+width:50%;
+background:white;
+}
+.centera{
+margin-left:auto;
+margin-right:auto;
+}
+.headimg{
+height:35px;
+width:35px;
+
+}
+.main-content{
+margin-left:auto;
+margin-right:auto;
+}
+ul li{
+min-width:200px;
+}
+</style>
+</head>
+<body class="login-layout blur-login">
+<div class="main-content ">
+<div class="show centera" ng-controller="ctrl">
+ <div class="send center">
+ <span style="" class="glyphicon glyphicon-pencil"></span>
+  <input type="text" ng-model="msg" style="width:50%" placeholder="点击输入文字"></input>
+  <button style="margin-left:30px"class="btn btn-warning" ng-click="toggle()"> <span class="glyphicon glyphicon-hand-right"></span> 点击发送</button>
+</div>
+ <div class="textarea "> 
+  <ul  class="list-group"  >
+	<li class="list-group-item"   ng-repeat="message in messages track by $index">
+
+        <a  href="#">
+   <span class="glyphicon glyphicon-envelope"></span>
+	<span string-html="message"></span>
+
+	<a>
+	</li>
+  </ul>
+
+</div>
+</div>
+</div>
+<script type="text/javascript">
+	//创建angular模型
+	var myDate =new Date();
+	var mytime=myDate.toLocaleTimeString(); 
+	console.log(mytime);
+	var username = angular.element('#username');
+	var headurl=angular.element('#headurl')[0].innerHTML;
+	console.log(angular.element('#headurl')[0].innerHTML);
+	console.log(username[0].innerText);
+	var nickname=username[0].innerText;
+	var app=angular.module('app',[]);
+	app.directive('stringHtml' , function(){
+  	return function(scope , el , attr){
+   	 if(attr.stringHtml){
+     	 scope.$watch(attr.stringHtml , function(html){
+       	 el.html(html || '');//更新html内容
+      });
+    }
+  };
+});
+	//创建控制器
+	app.controller('ctrl',function($scope){
+	var Msgs=[];
+	var socket=io.connect('/');
+	socket.emit('getAllMessages');
+	socket.on('connected',function(){
+		console.log('connected to mychat~!',username.val())
+});
+	socket.on('newClient',function(socket){
+	console.log('newClient:',socket);
+});
+	socket.on('allMessages',function(messages){
+	console.log('allMessages->messages:',messages);
+	Msgs=messages.slice();
+	$scope.$apply(function(){
+	$scope.messages=Msgs;	
+})
+});
+	socket.on('newMessage',function(message){
+	console.log('Get a new message:',message);
+	Msgs.unshift(message);
+	$scope.$apply(function(){
+	$scope.messages=Msgs;
+});
+
+
+});
+	$scope.toggle=function(){
+	
+	var msg='<img class="headimg" src="'+headurl+'"/>'+nickname+':'+$scope.msg+'   '+mytime;
+	socket.emit('addMessage',msg);
+}
+});
+</script>
+</body>
+
+</html>
