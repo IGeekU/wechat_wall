@@ -17,7 +17,7 @@ width:50%;
 background:white;
 }
 .send{
-background:#FFE7CE;
+background:#3366CC;
 }
 {
 margin-left:50px;
@@ -56,15 +56,15 @@ min-width:200px;
  <div class="send center">
  <span style="" class="glyphicon glyphicon-pencil"></span>
   <input type="text" ng-model="msg" style="width:50%" placeholder="点击输入文字"></input>
-  <button style="margin-left:30px"class="btn btn-warning" ng-click="toggle()"> <span class="glyphicon glyphicon-hand-right"></span> 点击发送</button>
+  <button style="margin-left:30px"class="btn btn-success" ng-click="toggle()"> <span class="glyphicon glyphicon-hand-right"></span> 发送信息</button>
 </div>
  <div class="textarea "> 
   <ul  class="list-group"  >
 	<li class="list-group-item"   ng-repeat="message in messages track by $index">
 
         <a  href="#">
-   <span class="glyphicon glyphicon-envelope"></span>
-	<span string-html="message"></span>
+   <span class="glyphicon glyphicon-comment"></span>
+	<span string-html="message">您好，欢迎进入微信墙！</span>
 
 	<a>
 	</li>
