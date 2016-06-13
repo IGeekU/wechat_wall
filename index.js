@@ -33,9 +33,8 @@ var server = http.createServer(function(req, res){
 	var nickname=userinfo.nickname;
 	var sex=userinfo.sex;
         res.write('<head><meta charset="utf-8"/></head>');
-	    res.write('<div class="text-center"><div class=" btn btn-info btn-lg"><h1 class="glyphicon glyphicon-headphones">Wechat Wall</h1></div>');
-        res.write('<h3 class="white"><button type="button" class="btn btn-primary btn-lg" style="text-shadow: black 5px 3px 3px;"><span class="glyphicon glyphicon-user"></span>User</button><a id="username" href="#">'+nickname+'</a>您好！<img height="60px",width="60px"src="'+headimg+'">欢迎进入微信墙<a style="visibility:hidden" id="headurl">'+headimg+'<a></h3></div>');
-	    res.write(data, 'utf8');
+        res.write('<div style="text-align:center"><h3 class="white">当前用户:<a href="#"> <span class="glyphicon glyphicon-user"></span> </a><img height="40px",width="40px"src="'+headimg+'"><a id="username" href="#">'+nickname+'</a></div><a style="visibility:hidden" id="headurl">'+headimg+'<a></h3></div>');     
+        res.write(data, 'utf8');
         res.end();
           });
         });
@@ -57,10 +56,10 @@ server.listen(4000,function(){
 var io=require('socket.io').listen(server);
 //初始化信息
 var messages=[];
-messages.push('欢迎进入微信墙');
+messages.push('您好，欢迎进入微信墙!');
 io.sockets.on('connection',function(socket){
 	socket.emit('connected');
-	console.log('客户端用户已连接！');
+	console.log('用户已连接！');
 	//广播新用户连接
 	socket.broadcast.emit('newClient',new Date());
 	//获取总信息
@@ -69,7 +68,7 @@ io.sockets.on('connection',function(socket){
 });	
 	//断开连接
 	socket.on('disconnect',function(){
-	console.log('有用户断开连接!');
+	console.log('用户断开连接!');
 });
 	//发送新消息 on 是接收 emit是发送 握手信号
 	socket.on('addMessage',function(message){
